@@ -1,0 +1,30 @@
+version: '3.3'
+
+services:
+  app:
+    build: ./apm
+    depends_on:
+      - datadog
+    ports:
+      - "5000:5000"
+  datadog:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DD_API_KEY: 8f6efa9b847082c3b3bfff932d1309b4
+      DD_HOSTNAME: datadog
+      DD_APM_ENABLED: "true"
+      NON_LOCAL_TRAFFIC: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro 
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: datadogroot
+      MYSQL_DATABASE: datadog
+      MYSQL_USER: datadog
+      MYSQL_PASSWORD: password

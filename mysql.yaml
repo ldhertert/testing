@@ -1,0 +1,9 @@
+init_config:
+
+instances:
+  - server: db
+    user: root
+    pass: datadogroot
+    tags:
+        - mysql
+        - docker
